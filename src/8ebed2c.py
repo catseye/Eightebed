@@ -16,7 +16,6 @@ the generated C source to stdout.\
 """
 
 import logging
-import os
 import sys
 
 from optparse import OptionParser

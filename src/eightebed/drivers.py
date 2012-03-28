@@ -47,6 +47,11 @@ def parse_and_gen(options, infilename, outfilename, tests=None):
 
 
 def compile_and_run(filename, options):
+    # a bit of a hack
+    a_out = './a.out'
+    if sys.platform == 'cygwin':
+        a_out = './a.exe'
+
     logger.info("Compiling...")
     output = Popen([options.compiler, filename], stdout=PIPE).communicate()[0]
     if options.verbose:
@@ -55,10 +60,10 @@ def compile_and_run(filename, options):
         raise RuntimeError("Compilation failed!")
     if options.run:
         logger.info("Running...")
-        output = Popen(["./a.out"], stdout=PIPE).communicate()[0]
+        output = Popen([a_out], stdout=PIPE).communicate()[0]
     if options.clean:
         os.remove(filename)
-        os.remove("./a.out")
+        os.remove(a_out)
     return output
 
 
