@@ -347,7 +347,7 @@ class VarDecl(object):
         self.name = decl.name
 
     def __repr__(self):
-        return "%s(%s, %s)" % (self.__class__.__name__, repr(self.name), repr(self.type))
+        return "%s(%r, %r)" % (self.__class__.__name__, self.name, self.type)
 
     def typecheck(self, types, vars):
         self.type.typecheck(types, vars)
@@ -377,7 +377,7 @@ class WhileStmt(object):
         self.block = data[2]
 
     def __repr__(self):
-        return "%s(%s, %s)" % (self.__class__.__name__, repr(self.expr), repr(self.block))
+        return "%s(%r, %r)" % (self.__class__.__name__, self.expr, self.block)
 
     def typecheck(self, types, vars):
         self.expr.typecheck(types, vars)
@@ -407,7 +407,8 @@ class IfStmt(object):
             self.else_ = Block(['{', [], '}'])
 
     def __repr__(self):
-        return "%s(%s, %s, %s)" % (self.__class__.__name__, repr(self.expr), repr(self.then), repr(self.else_))
+        return "%s(%r, %r, %r)" % (self.__class__.__name__,
+                                   self.expr, self.then, self.else_)
 
     def typecheck(self, types, vars):
         self.expr.typecheck(types, vars)
@@ -488,7 +489,7 @@ class AssignStmt(object):
         self.expr = data[2]
 
     def __repr__(self):
-        return "%s(%s, %s)" % (self.__class__.__name__, repr(self.ref), repr(self.expr))
+        return "%s(%r, %r)" % (self.__class__.__name__, self.ref, self.expr)
 
     def typecheck(self, types, vars):
         tlhs = self.ref.typecheck(types, vars)
@@ -530,7 +531,8 @@ class BinOpExpr(object):
         self.rhs = data[3]
 
     def __repr__(self):
-        return "%s(%s, %s, %s)" % (self.__class__.__name__, repr(self.lhs), repr(self.op), repr(self.rhs))
+        return "%s(%r, %r, %r)" % (self.__class__.__name__,
+                                   self.lhs, self.op, self.rhs)
 
     def typecheck(self, types, vars):
         trhs = self.lhs.typecheck(types, vars)
@@ -600,7 +602,8 @@ class DottedRef(object):
         self.member_name = data[4]
 
     def __repr__(self):
-        return "%s(%s, %s)" % (self.__class__.__name__, repr(self.source), repr(self.member_name))
+        return "%s(%r, %r)" % (self.__class__.__name__,
+                               self.source, self.member_name)
 
     def typecheck(self, types, vars):
         source_type = self.source.typecheck(types, vars)
@@ -689,42 +692,61 @@ g = Grammar()
 g['Eightebed'] = Sequence(Asteration(NonTerminal('TypeDecl')),
                           Asteration(NonTerminal('VarDecl')),
                           NonTerminal('Block')).construct(Eightebed)
-g['Block']    = Sequence(Terminal('{'),
-                         Asteration(NonTerminal('Stmt')),
-                         Terminal('}')).construct(Block)
+g['Block'] = Sequence(Terminal('{'),
+                      Asteration(NonTerminal('Stmt')),
+                      Terminal('}')).construct(Block)
 g['TypeDecl'] = Sequence(Terminal('type'),
                          NonTerminal('TypeName'),
                          NonTerminal('Type'),
                          Terminal(';')).construct(TypeDecl)
-g['Type']     = Alternation(Terminal('int').construct(TypeInt),
-                            Sequence(Terminal('struct'), Terminal('{'), Asteration(NonTerminal('Decl')), Terminal('}')).construct(TypeStruct),
-                            Sequence(Terminal('ptr'), Terminal('to'), NonTerminal('Type')).construct(TypePtr),
-                            NonTerminal('TypeName').construct(TypeNamed))
-g['Decl']     = Sequence(NonTerminal('Type'),
-                         NonTerminal('VarName'),
-                         Terminal(';')).construct(Decl)
-g['VarDecl']  = Sequence(Terminal('var'), NonTerminal('Decl')).construct(VarDecl)
-g['Stmt']     = Alternation(Sequence(Terminal('while'), NonTerminal('Expr'), NonTerminal('Block')).construct(WhileStmt),
-                            Sequence(Terminal('if'), NonTerminal('Expr'), NonTerminal('Block'),
-                                     Optional(Sequence(Terminal('else'), NonTerminal('Block')))).construct(IfStmt),
-                            Sequence(Terminal('free'), NonTerminal('Ref'), Terminal(';')).construct(FreeStmt),
-                            Sequence(Terminal('print'), NonTerminal('Expr'), Terminal(';')).construct(PrintStmt),
-                            Sequence(NonTerminal('Ref'), Terminal('='), NonTerminal('Expr'), Terminal(';')).construct(AssignStmt))
-g['Ref']      = Alternation(Sequence(Terminal('['), NonTerminal('Ref'), Terminal(']'), Terminal('.'), NonTerminal('VarName')).construct(DottedRef),
-                            Sequence(Terminal('@'), NonTerminal('Ref')).construct(DeRef),
-                            NonTerminal('VarName').construct(VarRef))
-g['Expr']     = Alternation(Sequence(Terminal('('), NonTerminal('Expr'), NonTerminal('BinOp'), NonTerminal('Expr'), Terminal(')')).construct(BinOpExpr),
-                            Sequence(Terminal('malloc'), NonTerminal('Type')).construct(MallocExpr),
-                            Sequence(Terminal('valid'), NonTerminal('Expr')).construct(ValidExpr),
-                            NonTerminal('IntLit').construct(IntConst),
-                            NonTerminal('Ref'))
-g['BinOp']    = Alternation(Terminal('+'), Terminal('-'), Terminal('*'),
-                            Terminal('/'), Terminal('='), Terminal('>'),
-                            Terminal('&'), Terminal('|'))
+g['Type'] = Alternation(Terminal('int').construct(TypeInt),
+                        Sequence(Terminal('struct'), Terminal('{'),
+                                 Asteration(NonTerminal('Decl')),
+                                 Terminal('}')).construct(TypeStruct),
+                        Sequence(Terminal('ptr'), Terminal('to'),
+                                 NonTerminal('Type')).construct(TypePtr),
+                         NonTerminal('TypeName').construct(TypeNamed))
+g['Decl'] = Sequence(NonTerminal('Type'),
+                     NonTerminal('VarName'),
+                     Terminal(';')).construct(Decl)
+g['VarDecl'] = Sequence(Terminal('var'),
+                        NonTerminal('Decl')).construct(VarDecl)
+g['Stmt'] = Alternation(Sequence(Terminal('while'), NonTerminal('Expr'),
+                                 NonTerminal('Block')).construct(WhileStmt),
+                        Sequence(Terminal('if'), NonTerminal('Expr'),
+                                 NonTerminal('Block'),
+                                 Optional(Sequence(Terminal('else'),
+                                          NonTerminal('Block')))
+                                ).construct(IfStmt),
+                        Sequence(Terminal('free'), NonTerminal('Ref'),
+                                 Terminal(';')).construct(FreeStmt),
+                        Sequence(Terminal('print'), NonTerminal('Expr'),
+                                 Terminal(';')).construct(PrintStmt),
+                        Sequence(NonTerminal('Ref'), Terminal('='),
+                                 NonTerminal('Expr'), Terminal(';')
+                                ).construct(AssignStmt))
+g['Ref'] = Alternation(Sequence(Terminal('['), NonTerminal('Ref'),
+                                Terminal(']'), Terminal('.'),
+                                NonTerminal('VarName')).construct(DottedRef),
+                       Sequence(Terminal('@'),
+                                NonTerminal('Ref')).construct(DeRef),
+                       NonTerminal('VarName').construct(VarRef))
+g['Expr'] = Alternation(Sequence(Terminal('('), NonTerminal('Expr'),
+                                 NonTerminal('BinOp'), NonTerminal('Expr'),
+                                 Terminal(')')).construct(BinOpExpr),
+                        Sequence(Terminal('malloc'),
+                                 NonTerminal('Type')).construct(MallocExpr),
+                        Sequence(Terminal('valid'),
+                                 NonTerminal('Expr')).construct(ValidExpr),
+                        NonTerminal('IntLit').construct(IntConst),
+                        NonTerminal('Ref'))
+g['BinOp'] = Alternation(Terminal('+'), Terminal('-'), Terminal('*'),
+                         Terminal('/'), Terminal('='), Terminal('>'),
+                         Terminal('&'), Terminal('|'))
 
 g['TypeName'] = Terminal(lambda x: re.match('^[a-zA-Z]\w*$', x))
-g['VarName']  = Terminal(lambda x: re.match('^[a-zA-Z]\w*$', x))
-g['IntLit']   = Terminal(lambda x: re.match('^\d+$', x))
+g['VarName'] = Terminal(lambda x: re.match('^[a-zA-Z]\w*$', x))
+g['IntLit'] = Terminal(lambda x: re.match('^\d+$', x))
 
 
 def parse(text):
