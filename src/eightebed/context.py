@@ -6,6 +6,8 @@ Contexts.  Can be used for type checking and other static analysis.
 
 notset = object()
 isset = object()
+
+
 class Context(dict):
     """
     >>> d = Context({ 'a': 2, 'b': 3 })
@@ -48,13 +50,13 @@ class Context(dict):
             return self[name]
         if self.parent is None:
             if default is notset:
-                raise KeyError, name
+                raise KeyError(name)
             return default
         return self.parent.lookup(name, default=default)
 
     def declare(self, name, value):
         if self.lookup(name, default=isset) is not isset:
-            raise KeyError, "%s already declared" % name
+            raise KeyError("%s already declared" % name)
         self[name] = value
 
     def empty(self):

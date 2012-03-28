@@ -52,7 +52,7 @@ def compile_and_run(filename, options):
     if options.verbose:
         sys.stdout.write(output)
     if output != '':
-        raise RuntimeError, "Compilation failed!"
+        raise RuntimeError("Compilation failed!")
     if options.run:
         logger.info("Running...")
         output = Popen(["./a.out"], stdout=PIPE).communicate()[0]
@@ -64,13 +64,13 @@ def compile_and_run(filename, options):
 
 def load_and_go(ast, options=None):
     class LoadAndGoOptions(object):
-        verbose=False
-        run=True
-        clean=True
-        compiler="gcc"
-        pedigree=__file__ + ":load_and_go"
-        trace_marking=False
-        pointer_format="$%08lx"
+        verbose = False
+        run = True
+        clean = True
+        compiler = "gcc"
+        pedigree = __file__ + ":load_and_go"
+        trace_marking = False
+        pointer_format = "$%08lx"
     options = options or LoadAndGoOptions()
     file = open("tmp.c", "w")
     ast.emit(file, options)
@@ -84,7 +84,7 @@ def cmdline(options):
     options.run = True
     options.clean = True
     while True:
-        sys.stdout.write("> ");
+        sys.stdout.write("> ")
         cmd = sys.stdin.readline().strip()
         if cmd == "quit":
             break

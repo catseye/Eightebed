@@ -7,6 +7,7 @@ Rooibos, a parser combinator module for Python.
 import re
 import types
 
+
 class Stream(object):
     """
     A Stream is a kind of wrapper around an iterator which allows
@@ -61,8 +62,8 @@ class Stream(object):
 
 class RegLexer(object):
     """
-    An iterator which, given a string, returns a generator which returns sucessive
-    prefixes of the string based on supplied regexes.
+    An iterator which, given a string, returns a generator which returns
+    sucessive prefixes of the string based on supplied regexes.
 
     >>> t = RegLexer()
     >>> t.register(r'(\d+)',   meta='integer')
@@ -93,7 +94,7 @@ class RegLexer(object):
         has_match = True
         while has_match:
             has_match = False
-            
+
             has_ignore = True
             while has_ignore:
                 has_ignore = False
@@ -168,7 +169,7 @@ class PredicateSet(object):
             if x(other):
                 return True
         return False
-    
+
     def __iter__(self):
         for x in self._set:
             yield x
@@ -417,7 +418,7 @@ class NonTerminal(Production):
 
     def _production(self, grammar):
         if not grammar:
-            raise TypeError, "need grammar to use NonTerminal"
+            raise TypeError("need grammar to use NonTerminal")
         return grammar[self.name]
 
     def parse(self, stream, grammar=None):
@@ -435,10 +436,12 @@ class Grammar(object):
     """Container for a set of named productions.
 
     >>> g = Grammar()
-    >>> g['Expr'] = Sequence(Terminal('('),Asteration(Terminal('*')),Terminal(')'))
+    >>> g['Expr'] = Sequence(Terminal('('),Asteration(Terminal('*')),
+    ...                      Terminal(')'))
     >>> g.parse('Expr', Stream(['(','*','*',')']))
     ['(', ['*', '*'], ')']
-    >>> g['Expr'] = Sequence(Terminal('('),Asteration(NonTerminal('Expr')),Terminal(')'))
+    >>> g['Expr'] = Sequence(Terminal('('),Asteration(NonTerminal('Expr')),
+    ...                      Terminal(')'))
     >>> g.parse('Expr', Stream(['(',')']))
     ['(', [], ')']
     >>> s = Stream(['(','(',')',')'])
@@ -449,7 +452,7 @@ class Grammar(object):
     >>> g.parse('Expr', Stream(['(','(',')'])) is None
     True
     """
-    
+
     trace = False
 
     def __init__(self, parent=None):
@@ -464,7 +467,8 @@ class Grammar(object):
         elif self.parent:
             return self.parent[key]
         else:
-            raise KeyError, "No production '%s' in grammar, and no parent grammar" % key
+            raise KeyError("No production '%s' in grammar, "
+                           "and no parent grammar" % key)
 
     def __setitem__(self, key, value):
         self.productions[key] = value

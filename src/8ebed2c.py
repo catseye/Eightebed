@@ -45,10 +45,12 @@ def main(argv):
                          help="printf format to use for pointers in "
                               "--trace-marking (default: %default)")
     optparser.add_option("-i", "--interactive",
-                         action="store_true", dest="interactive", default=False,
+                         action="store_true", dest="interactive",
+                         default=False,
                          help="enter interactive mode")
     optparser.add_option("-m", "--trace-marking",
-                         action="store_true", dest="trace_marking", default=False,
+                         action="store_true", dest="trace_marking",
+                         default=False,
                          help="trace marking actions in generated C source")
     optparser.add_option("-p", "--pedigree",
                          dest="pedigree", default=__file__,
