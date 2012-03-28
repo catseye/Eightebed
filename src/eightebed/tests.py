@@ -5,19 +5,21 @@
 Test suite for (Python implementations of) the Eightebed programming language.
 """
 
-import doctest
-
-from .parser import parse, TypeError
-from .context import Context
-from .drivers import parse_and_check, load_and_go
-
 
 class Tests(object):
     """Class containing test cases for Eightebed.
 
+    >>> from .parser import parse, Eightebed
+    >>> from .drivers import parse_and_check, load_and_go
     >>> p = parse(Tests.simple_ok)
-    >>> print p
-    Eightebed([], [VarDecl('jim', TypeInt())], Block([AssignStmt(VarRef('jim'), IntConst(4))]))
+    >>> isinstance(p, Eightebed)
+    True
+    >>> p.typedecls
+    []
+    >>> p.vardecls
+    [VarDecl('jim', TypeInt())]
+    >>> p.block
+    Block([AssignStmt(VarRef('jim'), IntConst(4))])
     >>> p = parse_and_check(Tests.simple_ok)
 
     >>> parse_and_check(Tests.double_declaration)
@@ -69,26 +71,27 @@ class Tests(object):
 
     >>> p = parse_and_check(Tests.allocated_values_initialized)
     >>> load_and_go(p)
-    0 
+    '0 '
 
     >>> p = parse_and_check(Tests.simple_arith)
     >>> load_and_go(p)
-    4 
+    '4 '
 
     >>> p = parse_and_check(Tests.loop_1)
     >>> load_and_go(p)
-    5 4 3 2 1 
+    '5 4 3 2 1 '
 
     >>> p = parse_and_check(Tests.allocating_loop)
     >>> load_and_go(p)
+    ''
 
     >>> p = parse_and_check(Tests.free_invalidates)
     >>> load_and_go(p)
-    53 
+    '53 '
 
     >>> p = parse_and_check(Tests.alias_is_invalidated)
     >>> load_and_go(p)
-    100 99 98 97 96 95 94 93 92 91 90 89 88 
+    '100 99 98 97 96 95 94 93 92 91 90 89 88 '
 
     In principle, this test demonstrates that the memory freed by the
     free command can be re-used by a subsequent malloc expression.  Of
@@ -98,10 +101,9 @@ class Tests(object):
 
     >>> p = parse_and_check(Tests.allocate_and_free_loop)
     >>> load_and_go(p)
-    50 
+    '50 '
 
     """
-    
     simple_ok = """\
     var int jim;
     {
@@ -163,7 +165,7 @@ class Tests(object):
         ptr to node next;
     };
     var ptr to node jim;
-    {    
+    {
         jim = malloc node;
         print [@jim].value;
         free jim;
@@ -227,7 +229,7 @@ class Tests(object):
     };
     var ptr to node jim;
     var ptr to node nestor;
-    {    
+    {
         jim = malloc node;
         if valid jim {
             print [@jim].value;

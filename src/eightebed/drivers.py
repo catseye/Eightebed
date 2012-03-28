@@ -80,7 +80,7 @@ def load_and_go(ast, options=None):
     file = open("tmp.c", "w")
     ast.emit(file, options)
     file.close()
-    sys.stdout.write(compile_and_run("tmp.c", options))
+    return compile_and_run("tmp.c", options)
 
 
 def cmdline(options):
@@ -95,6 +95,7 @@ def cmdline(options):
             break
         try:
             ast = parse_and_check(cmd, options=options)
-            load_and_go(ast, options)
+            result = load_and_go(ast, options=options)
+            sys.stdout.write(result)
         except Exception, e:
             print "Exception!", repr(e)
