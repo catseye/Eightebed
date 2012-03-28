@@ -1,0 +1,39 @@
+type node struct {
+    int value;
+    ptr to node next;
+};
+var ptr to node jim;
+var ptr to node harry;
+var ptr to node bertie;
+var ptr to node albert;
+var int i;
+{
+    albert = malloc node;
+    jim = albert;
+    harry = jim;
+    i = 100;
+    while i {
+        harry = malloc node;
+        if valid jim {
+            [@jim].value = i;
+        }
+        if (i = 87) {
+            bertie = jim;
+        }
+        if valid jim {
+            [@jim].next = harry;
+            if valid harry {
+                jim = harry;
+            }
+        }
+        i = (i - 1);
+    }
+    free bertie;
+    jim = albert;
+    while valid jim {
+        if valid jim {
+            print [@jim].value;
+            jim = [@jim].next;
+        }
+    }
+}
