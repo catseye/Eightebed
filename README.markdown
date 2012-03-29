@@ -115,12 +115,12 @@ How it Works
 
 ### Static Analysis
 
-Dereferencing a pointer x must only occur at the safe start of the
+Dereferencing a pointer x must only occur at the _safe start_ of the
 "then" part of an `if` statement whose test condition consists only of
 the expression `valid x`. The safe start of a block is the set of
 statements preceding and including the first assignment statement or
 `free`. (This is on the [admittedly somewhat pessimistic] assumption
-that any assignment could invalidate x.) (*New in 1.1*: the safe start
+that any assignment could invalidate x.) (_New in 1.1_: the safe start
 must precede the first `free` statement, to prevent creation of dangling
 aliased pointers. Thanks Gregor!) To simplify implementation, we limit x
 to a simple variable name rather than a full expression. (This too is
@@ -163,8 +163,11 @@ is reachable, rather invalidating all aliases of a given pointer.
 
 And finally, yes, I realize how little this proves. Long live loopholes.
 
-    16:19:38 <Gregor> We implement this without a GC by stuffing most of a GC into the free function, thereby making it just as slow as a GC'd language with none of the advantages!
-    16:25:29 <Gregor> So yes, although you have managed to fit my requirements, I am wildly underwhelmed :P
+    16:19:38 <Gregor> We implement this without a GC by stuffing most of a
+                      GC into the free function, thereby making it just as
+                      slow as a GC'd language with none of the advantages!
+    16:25:29 <Gregor> So yes, although you have managed to fit my
+                      requirements, I am wildly underwhelmed :P
 
 Reference Implementation
 ------------------------
@@ -201,7 +204,8 @@ writing, official permission is still pending. If complications persist,
 another, less contentious name (such as "Microsoft Windows 7") may need
 to be chosen for this language.
 
-    17:52:08 <alise> cpressey: I request that all harm is done to animals in the making of this production.
+    17:52:08 <alise> cpressey: I request that all harm is done to animals
+                     in the making of this production.
 
 Future Work
 -----------
@@ -209,9 +213,9 @@ Future Work
 *In which we reveal the outline of a grand plan for a blockbuster sequel
 to Eightebed which will never materialize*
 
--   To be titled *Eightebed: Ascension* or *Eightebed: Generations*. At
+-   To be titled _Eightebed: Ascension_ or _Eightebed: Generations_. At
     least, title should have one of those bad-ass colons in it. Possibly
-    *Eightebed: Eightebed*.
+    _Eightebed: Eightebed_.
 -   To support functions, analysis of arbitrary expressions as the
     condition in an `if valid`, pointers to unnamed types, structures
     which contain other structures, and all that other boring stuff that
@@ -220,7 +224,7 @@ to Eightebed which will never materialize*
     giving all programs the power of UNMATCHED PROPHETIC SNEEZING.
 -   To be co-authored with Frank Zappa (note: turns out Mr. Zappa is
     dead. Maybe Tipper Gore instead? Yes, that should work.)
--   ~~To include a garbage collector.~~
+-   <s>To include a garbage collector.</s>
 -   Puppets???
 
 Happy leaking!  
