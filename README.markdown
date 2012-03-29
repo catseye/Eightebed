@@ -224,7 +224,7 @@ to Eightebed which will never materialize*
     giving all programs the power of UNMATCHED PROPHETIC SNEEZING.
 -   To be co-authored with Frank Zappa (note: turns out Mr. Zappa is
     dead. Maybe Tipper Gore instead? Yes, that should work.)
--   <s>To include a garbage collector.</s>
+-   ~~To include a garbage collector.~~
 -   Puppets???
 
 Happy leaking!  
