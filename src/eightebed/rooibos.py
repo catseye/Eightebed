@@ -2,6 +2,9 @@
 
 """
 Rooibos, a parser combinator module for Python.
+
+Written by Chris Pressey of Cat's Eye Technologies.
+This work is hereby placed in the public domain.
 """
 
 import re
@@ -94,8 +97,8 @@ class RegLexer(object):
         has_match = True
         while has_match:
             has_match = False
-
             has_ignore = True
+
             while has_ignore:
                 has_ignore = False
                 for pattern in self.ignoring:
@@ -111,6 +114,7 @@ class RegLexer(object):
                     self.text = self.text[result.end():]
                     has_match = True
                     break
+
             if has_match:
                 if meta is not None:
                     yield meta, result.group()
@@ -175,7 +179,7 @@ class PredicateSet(object):
             yield x
 
     def __repr__(self):
-        return "PredicateSet(%s)" % repr(self._set)
+        return "PredicateSet(%r)" % self._set
 
 
 ### Productions ###
@@ -436,12 +440,12 @@ class Grammar(object):
     """Container for a set of named productions.
 
     >>> g = Grammar()
-    >>> g['Expr'] = Sequence(Terminal('('),Asteration(Terminal('*')),
-    ...                      Terminal(')'))
+    >>> g['Expr'] = Sequence(
+    ...   Terminal('('),Asteration(Terminal('*')),Terminal(')'))
     >>> g.parse('Expr', Stream(['(','*','*',')']))
     ['(', ['*', '*'], ')']
-    >>> g['Expr'] = Sequence(Terminal('('),Asteration(NonTerminal('Expr')),
-    ...                      Terminal(')'))
+    >>> g['Expr'] = Sequence(
+    ...   Terminal('('),Asteration(NonTerminal('Expr')),Terminal(')'))
     >>> g.parse('Expr', Stream(['(',')']))
     ['(', [], ')']
     >>> s = Stream(['(','(',')',')'])
@@ -467,8 +471,8 @@ class Grammar(object):
         elif self.parent:
             return self.parent[key]
         else:
-            raise KeyError("No production '%s' in grammar, "
-                           "and no parent grammar" % key)
+            raise KeyError("No production '%s' in grammar, and "
+                           "no parent grammar" % key)
 
     def __setitem__(self, key, value):
         self.productions[key] = value
