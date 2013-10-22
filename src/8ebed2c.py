@@ -74,10 +74,13 @@ def main(argv):
         options.compile = True
     if options.test:
         import doctest
-        doctest.testmod(rooibos)
-        doctest.testmod(context)
-        doctest.testmod(tests)
-        sys.exit(0)
+        (f1, smth) = doctest.testmod(rooibos)
+        (f2, smth) = doctest.testmod(context)
+        (f3, smth) = doctest.testmod(tests)
+        if f1 + f2 + f3 == 0:
+            sys.exit(0)
+        else:
+            sys.exit(1)
     if options.interactive:
         cmdline(options)
         sys.exit(0)
