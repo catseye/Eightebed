@@ -181,6 +181,11 @@ with the C compiler of your choice and run the resulting executable.
 suite of test programs, which can of course double as example sources;
 these can be found in the `eightebed.tests` module.
 
+`8ebed2c.py` also ships with a parser combinator module called `rooibos.py`
+which, being a single file and in the public domain, can be dropped into
+and used in any Python project that requires an LL(1) recursive-descent
+parser, if that's your sort of thing.
+
 For an appreciation of just how cockamamie `8ebed2c.py` is, run
 `8ebed2c.py --help` and read through the command-line options it
 provides.
