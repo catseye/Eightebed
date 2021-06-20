@@ -56,11 +56,17 @@ def compile_and_run(filename, options):
     output = Popen([options.compiler, filename], stdout=PIPE).communicate()[0]
     if options.verbose:
         sys.stdout.write(output)
-    if output != '':
+    if output not in ('', b''):
         raise RuntimeError("Compilation failed!")
     if options.run:
         logger.info("Running...")
         output = Popen([a_out], stdout=PIPE).communicate()[0]
+        try:
+            # Python 2
+            output = unicode(output).encode('ascii')
+        except NameError:
+            # Python 3
+            output = output.decode('ascii')
     if options.clean:
         os.remove(filename)
         os.remove(a_out)

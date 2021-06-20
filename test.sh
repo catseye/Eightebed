@@ -1,3 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 
-src/8ebed2c.py -t -v
+python2 src/8ebed2c.py -t || exit 1
+python3 src/8ebed2c.py -t || exit 1
