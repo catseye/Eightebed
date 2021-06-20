@@ -85,7 +85,7 @@ def load_and_go(ast, options=None):
 
 def cmdline(options):
     cmd = ""
-    print "Eightebed interactive!  Type 'quit' to quit."
+    print("Eightebed interactive!  Type 'quit' to quit.")
     options.run = True
     options.clean = True
     while True:
@@ -97,5 +97,5 @@ def cmdline(options):
             ast = parse_and_check(cmd, options=options)
             result = load_and_go(ast, options=options)
             sys.stdout.write(result)
-        except Exception, e:
-            print "Exception!", repr(e)
+        except Exception as e:
+            print("Exception!", repr(e))

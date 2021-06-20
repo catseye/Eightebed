@@ -88,8 +88,8 @@ def main(argv):
         infilename = args[0]
         outfilename = args[1]
     except IndexError:
-        print "Usage:", __doc__, "\n"
-        print "Run with the -h option to see a list of all options."
+        print("Usage:", __doc__, "\n")
+        print("Run with the -h option to see a list of all options.")
         sys.exit(1)
     parse_and_gen(options, infilename, outfilename, tests=tests.Tests)
     if options.compile:
