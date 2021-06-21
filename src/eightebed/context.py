@@ -12,18 +12,18 @@ class Context(dict):
     """
     >>> d = Context({ 'a': 2, 'b': 3 })
     >>> e = Context({ 'c': 4 }, parent=d)
-    >>> print e.lookup('c')
+    >>> e.lookup('c')
     4
-    >>> print e.lookup('b')
+    >>> e.lookup('b')
     3
-    >>> print e.lookup('e', None)
-    None
-    >>> print e.lookup('e')
+    >>> e.lookup('e', None) is None
+    True
+    >>> e.lookup('e')
     Traceback (most recent call last):
     ...
     KeyError: 'e'
     >>> d.declare('d', 7)
-    >>> print e.lookup('d')
+    >>> e.lookup('d')
     7
     >>> d.declare('b', 4)
     Traceback (most recent call last):
@@ -34,10 +34,10 @@ class Context(dict):
     ...
     KeyError: 'b already declared'
     >>> e.empty()
-    >>> print e.lookup('c', None)
-    None
-    >>> print d.lookup('a', None)
-    None
+    >>> e.lookup('c', None) is None
+    True
+    >>> d.lookup('a', None) is None
+    True
 
     """
 

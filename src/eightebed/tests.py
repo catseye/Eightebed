@@ -6,6 +6,16 @@ Test suite for (Python implementations of) the Eightebed programming language.
 """
 
 
+def expect_type_error(fun):
+    from .parser import TypeError
+    try:
+        fun()
+    except TypeError as e:
+        print('Traceback (most recent call last):')
+        print('...')
+        print('TypeError: {}'.format(e))
+
+
 class Tests(object):
     """Class containing test cases for Eightebed.
 
@@ -27,32 +37,32 @@ class Tests(object):
     ...
     KeyError: 'jim already declared'
 
-    >>> parse_and_check(Tests.ptr_to_ptr)
+    >>> expect_type_error(lambda: parse_and_check(Tests.ptr_to_ptr))
     Traceback (most recent call last):
     ...
     TypeError: Pointer type must point to named type
 
-    >>> parse_and_check(Tests.ptr_to_int)
+    >>> expect_type_error(lambda: parse_and_check(Tests.ptr_to_int))
     Traceback (most recent call last):
     ...
     TypeError: Pointer type must point to named type
 
-    >>> parse_and_check(Tests.struct_within_struct)
+    >>> expect_type_error(lambda: parse_and_check(Tests.struct_within_struct))
     Traceback (most recent call last):
     ...
     TypeError: Structs may not contain other structs
 
-    >>> parse_and_check(Tests.named_int)
+    >>> expect_type_error(lambda: parse_and_check(Tests.named_int))
     Traceback (most recent call last):
     ...
     TypeError: Only structs may be named
 
-    >>> parse_and_check(Tests.dereference_outside_conditional)
+    >>> expect_type_error(lambda: parse_and_check(Tests.dereference_outside_conditional))
     Traceback (most recent call last):
     ...
     TypeError: Attempt to dereference jim in non-safe context
 
-    >>> parse_and_check(Tests.dereference_outside_safe_area)
+    >>> expect_type_error(lambda: parse_and_check(Tests.dereference_outside_safe_area))
     Traceback (most recent call last):
     ...
     TypeError: Attempt to dereference jim in non-safe context
@@ -61,7 +71,7 @@ class Tests(object):
     >>> p is None
     False
 
-    >>> parse_and_check(Tests.dereference_after_free)
+    >>> expect_type_error(lambda: parse_and_check(Tests.dereference_after_free))
     Traceback (most recent call last):
     ...
     TypeError: Attempt to dereference jim in non-safe context

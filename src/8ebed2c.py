@@ -6,7 +6,7 @@
                            (in.8ebed|@testprog) (out.c|-)
 
 8ebed2c.py: A compiler (to C) for the Eightebed programming language.
-Language version 1.1.  Implementation version 2011.0510.
+Language version 1.1.  Implementation version 2021.0621.
 
 The @testprog syntax can be used to acquire input from the
 specified attribute of the Tests class of the tests module.
@@ -88,8 +88,8 @@ def main(argv):
         infilename = args[0]
         outfilename = args[1]
     except IndexError:
-        print "Usage:", __doc__, "\n"
-        print "Run with the -h option to see a list of all options."
+        print("Usage: {}\n".format(__doc__))
+        print("Run with the -h option to see a list of all options.")
         sys.exit(1)
     parse_and_gen(options, infilename, outfilename, tests=tests.Tests)
     if options.compile:

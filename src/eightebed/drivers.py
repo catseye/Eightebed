@@ -56,11 +56,17 @@ def compile_and_run(filename, options):
     output = Popen([options.compiler, filename], stdout=PIPE).communicate()[0]
     if options.verbose:
         sys.stdout.write(output)
-    if output != '':
+    if output not in ('', b''):
         raise RuntimeError("Compilation failed!")
     if options.run:
         logger.info("Running...")
         output = Popen([a_out], stdout=PIPE).communicate()[0]
+        try:
+            # Python 2
+            output = unicode(output).encode('ascii')
+        except NameError:
+            # Python 3
+            output = output.decode('ascii')
     if options.clean:
         os.remove(filename)
         os.remove(a_out)
@@ -85,7 +91,7 @@ def load_and_go(ast, options=None):
 
 def cmdline(options):
     cmd = ""
-    print "Eightebed interactive!  Type 'quit' to quit."
+    print("Eightebed interactive!  Type 'quit' to quit.")
     options.run = True
     options.clean = True
     while True:
@@ -97,5 +103,5 @@ def cmdline(options):
             ast = parse_and_check(cmd, options=options)
             result = load_and_go(ast, options=options)
             sys.stdout.write(result)
-        except Exception, e:
-            print "Exception!", repr(e)
+        except Exception as e:
+            print("Exception!", repr(e))

@@ -52,14 +52,14 @@ class Stream(object):
     def peek(self):
         if not self.buffer:
             try:
-                self.buffer.append(self.generator.next())
+                self.buffer.append(next(self.generator))
             except StopIteration:
                 return None
         return self.buffer[0]
 
     def advance(self):
         if not self.buffer:
-            self.buffer.extend(self.generator.next())
+            self.buffer.extend(next(self.generator))
         self.buffer.pop()
 
 
@@ -465,7 +465,7 @@ class Grammar(object):
 
     def __getitem__(self, key):
         if self.trace:
-            print "Reading production ", key
+            print("Reading production ", key)
         if key in self.productions:
             return self.productions[key]
         elif self.parent:

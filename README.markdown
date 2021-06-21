@@ -173,7 +173,7 @@ Reference Implementation
 ------------------------
 
 Cat's Eye Technologies provides a cockamamie reference implementation of
-Eightebed called `8ebed2c.py`. Written in Python 2.6, it compiles
+Eightebed called `8ebed2c.py`. Written in Python 2.7 or 3.6, it compiles
 Eightebed code to C, and for convenience will optionally compile that C
 with the C compiler of your choice and run the resulting executable.
 
