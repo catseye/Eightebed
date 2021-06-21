@@ -6,7 +6,7 @@
                            (in.8ebed|@testprog) (out.c|-)
 
 8ebed2c.py: A compiler (to C) for the Eightebed programming language.
-Language version 1.1.  Implementation version 2011.0510.
+Language version 1.1.  Implementation version 2021.0621.
 
 The @testprog syntax can be used to acquire input from the
 specified attribute of the Tests class of the tests module.
